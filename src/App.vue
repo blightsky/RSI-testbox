@@ -1,7 +1,7 @@
 <template>
   <div :class="{'dark': darkMode}">
     <igt-notifications></igt-notifications>
-    <igt-sidebar>
+    <igt-sidebar title="Voidlings Sphere">
 
       <igt-sidebar-category name="Features"></igt-sidebar-category>
 
@@ -44,13 +44,12 @@
       </igt-tab>
 
       <igt-sidebar-category name="Socials"></igt-sidebar-category>
-      <igt-sidebar-external-link name="Discord" link="https://discord.gg/WUYDqct2Ef"
+      <igt-sidebar-external-link name="Discord" link="https://discord.gg/WzejVAx"
                                  image="socials/discord.png"></igt-sidebar-external-link>
-      <igt-sidebar-external-link name="Documentation"
-                                 link="https://123ishatest.github.io/incremental-game-template-website/"
-                                 image="socials/docusaurus.svg"></igt-sidebar-external-link>
-      <igt-sidebar-external-link name="GitHub" link="https://github.com/123ishaTest/incremental-game-template"
+      <igt-sidebar-external-link name="GitHub" link="https://github.com/thepaperpilot/incremental-game-template"
                                  image="socials/github.png"></igt-sidebar-external-link>
+      <igt-sidebar-external-link name="Made with IGT" link="https://github.com/123ishaTest/incremental-game-template"
+                                 image="socials/isha.png"></igt-sidebar-external-link>
     </igt-sidebar>
 
   </div>
