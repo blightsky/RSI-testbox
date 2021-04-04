@@ -31,7 +31,7 @@ export class Game {
      * TODO Make sure this key is unique to your game.
      * Otherwise you might run into loading conflicts when multiple games are hosted on the same domain (such as <username.github.io/game)
      */
-    private readonly SAVE_KEY = "unique-key-for-your-game";
+    private readonly SAVE_KEY = "thepaperpilot.voidlings";
 
     constructor(features: Features) {
         this.features = features;
