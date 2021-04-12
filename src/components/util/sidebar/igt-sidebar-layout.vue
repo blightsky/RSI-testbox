@@ -17,16 +17,19 @@
         <nav class="flex flex-col mt-10 px-4 text-left">
 
           <a class="flex flex-row w-full justify-between items-center tab-entry dark:text-white" :key="'tabasd'+index"
-             v-for="(tab, index) in tabs"
-             :class="{ 'bg-gray-200 dark:text-gray-700': tab.isActive,
-             'hover:text-gray-700 hover:bg-gray-200 cursor-pointer dark:hover:text-gray-700': !tab.isCategory }"
+             v-for="(tab, index) in visibleTabs"
+             :class="{
+               'bg-gray-200 dark:text-gray-700': tab.isActive,
+                'hover:text-gray-700 hover:bg-gray-200 cursor-pointer dark:hover:text-gray-700': !tab.isCategory
+             }"
+             :style="tab.containerStyle"
              :href="tab.link" target="_blank"
              @click="tab.canSelect ? selectTab(tab) : ''"
           >
 
-            <div v-if="tab.isCategory" class="w-full mt-8 mb-4 text-sm text-left" :key="'tab'+index">
+            <div v-if="tab.isCategory" :class="{ 'w-full text-sm text-left': true, [tab.classes]: true }" :key="'tab'+index">
               {{ tab.name }}
-              <hr/>
+              <hr v-if="tab.hideSeparator !== false"/>
             </div>
             <span v-else>{{ tab.name }}</span>
             <img v-if="tab.image" class="w-8 h-8" :src="require('@/assets/' +tab.image)" :alt="tab.image"/>
@@ -96,6 +99,9 @@ export default {
         return tab.isActive;
       });
     },
+    visibleTabs() {
+      return this.tabs.filter(tab => tab.visible !== false);
+    }
   },
   created() {
     this.tabs = this.$children;

@@ -12,12 +12,12 @@ export class WeightedDistribution<T> {
         return this.outcomes.filter(o => o.canGet());
     }
 
-    draw(): T {
+    draw(random?: number): T {
         if (this.outcomesWithMetRequirements().length === 0) {
             throw new Error("Cannot draw from empty distribution");
         }
         const totalWeight = this.getTotalWeight();
-        const random = Random.floatBetween(0, totalWeight);
+        random = random == null ? Random.floatBetween(0, totalWeight) : totalWeight * random;
 
         let weight: number = 0;
         for (const outcome of this.outcomesWithMetRequirements()) {

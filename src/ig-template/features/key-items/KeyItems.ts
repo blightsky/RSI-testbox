@@ -16,8 +16,15 @@ export class KeyItems extends Feature {
 
 
     initialize() {
-        this.registerKeyItem(new KeyItem(KeyItemId.Item1, "Item 1", "Grants access to something", "Maybe look over there?", "logo.png"));
-        this.registerKeyItem(new KeyItem(KeyItemId.Item2, "Item 2", "Now you can do something"));
+        this.registerKeyItem(new KeyItem(KeyItemId.Factory, "Factory", "Grants access to the factory", "Defeat 1 voidling", "logo.png"));
+        this.registerKeyItem(new KeyItem(KeyItemId.Wheel, "Wheel", "Grants access to the mystic wheel", "Defeat 10 voidlings", "logo.png"));
+        this.registerKeyItem(new KeyItem(KeyItemId.StrongerWeapons, "Stronger weapons", "Empowers you to kill voidlings with fewer nanobots", "Defeat 100 voidlings", "logo.png"));
+        this.registerKeyItem(new KeyItem(KeyItemId.CombatEfficiency, "Combat Efficiency", "Empowers you to kill voidlings quicker", "Defeat 500 voidlings", "logo.png"));
+        this.registerKeyItem(new KeyItem(KeyItemId.WheelOfFortune, "Wheel of Fortune", "Empowers you to increase the effect of wheel rewards", "Defeat 1,000 voidlings", "logo.png"));
+        this.registerKeyItem(new KeyItem(KeyItemId.WheelOfButter, "Wheel of Butter", "Empowers you to increase the speed of the wheel, and make it auto-spin", "Defeat 2,500 voidlings", "logo.png"));
+        this.registerKeyItem(new KeyItem(KeyItemId.Synergy, "Synergy", "Empowers you to increase the efficiency of your factory", "Defeat 10,000 voidlings", "logo.png"));
+        this.registerKeyItem(new KeyItem(KeyItemId.MassMurder, "Mass Murder", "Empowers you to kill more voidlings at once", "Defeat 100,000 voidlings", "logo.png"));
+        this.registerKeyItem(new KeyItem(KeyItemId.Victory, "Victory", "You've won the game!", "Defeat 1,000,000 voidlings", "logo.png"));
     }
 
     public registerKeyItem<T extends KeyItem>(keyItem: T): T {

@@ -3,5 +3,6 @@
  */
 export enum UpgradeType {
     None,
-    Money,
+    VoidBatteries,
+    Nanobots
 }

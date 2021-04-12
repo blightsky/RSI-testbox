@@ -10,7 +10,7 @@ export abstract class Requirement {
     // Getters as the user should view these as attributes
 
     get isCompleted(): boolean {
-        return this.actualValue >= this.targetValue;
+        return Decimal.gte(this.actualValue, this.targetValue);
     }
 
     get progress(): Progress {

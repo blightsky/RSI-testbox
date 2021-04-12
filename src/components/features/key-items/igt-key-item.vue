@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col border-2 m-2 p-2 h-48 w-36 justify-between shadow-md"
+  <div class="flex flex-col border-2 m-2 p-2 h-56 w-36 justify-between shadow-md"
        :class="{'bg-gray-400': !item.isUnlocked, 'bg-green-500': item.isUnlocked}"
        :title="item.isUnlocked ? item.description : item.unlockHint"
   >

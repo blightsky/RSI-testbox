@@ -2,10 +2,11 @@ import {ISimpleEvent, SimpleEventDispatcher} from "strongly-typed-events";
 import {Progress} from "@/ig-template/tools/requirements/Progress";
 import {Requirement} from "@/ig-template/tools/requirements/Requirement";
 import {NoRequirement} from "@/ig-template/tools/requirements/NoRequirement";
+import Decimal from "@/lib/break_eternity.min";
 
 export abstract class AbstractAction {
     description: string;
-    duration: number;
+    durationFunc: () => number;
     repeat: number; // 0, x, Infinity (until error)
 
     isStarted: boolean = false;
@@ -14,11 +15,11 @@ export abstract class AbstractAction {
     requirement: Requirement;
 
     // One iteration done
-    private _onCompletion = new SimpleEventDispatcher<AbstractAction>();
+    protected _onCompletion = new SimpleEventDispatcher<Decimal>();
 
-    protected constructor(description: string, duration: number, repeat: number = Infinity, requirement: Requirement = new NoRequirement()) {
+    protected constructor(description: string, durationFunc: () => number, repeat: number = Infinity, requirement: Requirement = new NoRequirement()) {
         this.description = description;
-        this.duration = duration;
+        this.durationFunc = durationFunc;
         this.repeat = repeat;
         this.requirement = requirement
     }
@@ -36,11 +37,11 @@ export abstract class AbstractAction {
     }
 
     canBeCompleted() {
-        return this.isStarted && this.currentProgress >= this.duration;
+        return this.isStarted && this.currentProgress >= this.durationFunc();
     }
 
     complete(): void {
-        this._onCompletion.dispatch(this);
+        this._onCompletion.dispatch(new Decimal(1));
         const canRepeat: boolean = this.gainReward();
         if (canRepeat && this.repeat > 0) {
             this.repeatAction();
@@ -50,7 +51,7 @@ export abstract class AbstractAction {
     }
 
     getProgress(): Progress {
-        return new Progress(this.currentProgress, this.duration);
+        return new Progress(this.currentProgress, this.durationFunc());
     }
 
     repeatAction() {
@@ -93,7 +94,7 @@ export abstract class AbstractAction {
      */
     abstract gainReward(): boolean;
 
-    public get onCompletion(): ISimpleEvent<AbstractAction> {
+    public get onCompletion(): ISimpleEvent<Decimal> {
         return this._onCompletion.asEvent();
     }
 }

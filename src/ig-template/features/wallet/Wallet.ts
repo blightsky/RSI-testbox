@@ -30,6 +30,8 @@ export class Wallet extends Feature {
             this._currencies[type as CurrencyType] = new Decimal(0);
             this._multipliers[type as CurrencyType] = new Decimal(1);
         }
+        this._currencies[CurrencyType.Voidlings] = new Decimal(1e6);
+        this._currencies[CurrencyType.CombatBots] = new Decimal(1);
     }
 
     public getAmount(type: CurrencyType): Decimal {
@@ -43,7 +45,10 @@ export class Wallet extends Feature {
      * Gain the specified currency and apply the global multiplier
      */
     public gainCurrency(currency: Currency): void {
-        currency.amount = currency.amount.multiply(this.getCurrencyMultiplier(currency.type));
+        // Should've just used loseCurrency but oh well time constraints
+        if (currency.amount.gt(0)) {
+            currency.amount = currency.amount.multiply(this.getCurrencyMultiplier(currency.type));
+        }
 
         if (!currency.isValid() || !this.supportsCurrencyType(currency.type)) {
             console.warn(`Could not add currency ${currency.toString()}`);
@@ -150,14 +155,18 @@ export class Wallet extends Feature {
 
     public save(): WalletSaveData {
         return {
-            money: this._currencies[CurrencyType.Money].toString(),
-            secondary: this._currencies[CurrencyType.Secondary].toString(),
+            voidlings: this._currencies[CurrencyType.Voidlings].toString(),
+            combatBots: this._currencies[CurrencyType.CombatBots].toString(),
+            batteries: this._currencies[CurrencyType.VoidBatteries].toString(),
+            combatBotsMod: this._multipliers[CurrencyType.CombatBots].toString()
         }
     }
 
     public load(data: WalletSaveData): void {
-        this._currencies[CurrencyType.Money] = new Decimal(data.money);
-        this._currencies[CurrencyType.Secondary] = new Decimal(data.secondary);
+        this._currencies[CurrencyType.Voidlings] = new Decimal(data.voidlings);
+        this._currencies[CurrencyType.CombatBots] = new Decimal(data.combatBots);
+        this._currencies[CurrencyType.VoidBatteries] = new Decimal(data.batteries);
+        this._multipliers[CurrencyType.CombatBots] = new Decimal(data.combatBotsMod);
     }
 
     /**
@@ -168,22 +177,29 @@ export class Wallet extends Feature {
         return this._onCurrencyGain.asEvent();
     }
 
-    public get money(): Decimal {
-        return this._currencies.Money;
+    public get voidlings(): Decimal {
+        return this._currencies.Voidlings;
     }
 
-    public set money(value: Decimal) {
-        this._currencies.Money = value;
+    public set voidlings(value: Decimal) {
+        this._currencies.Voidlings = value;
+    }
+
+    public get combatBots(): Decimal {
+        return this._currencies.CombatBots;
+    }
+
+    public set combatBots(value: Decimal) {
+        this._currencies.CombatBots = value;
     }
 
 
     getDeveloperPanelFields(): AbstractField[] {
         return [
-            new NumberField('money', 'Money'),
+            new NumberField('voidlings', 'Voidlings'),
             new FunctionField(() => {
-                this.money = new Decimal(10);
-            }, 'Set money to 10').setCssClass('btn-blue'),
-            new RangeField('money', 0, 100, 2, 'Money Slider'),
+                this.voidlings = new Decimal(1e6);
+            }, 'Set voidlins to 1e6').setCssClass('btn-blue')
         ]
     }
 }

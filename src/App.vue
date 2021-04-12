@@ -3,34 +3,24 @@
     <igt-notifications></igt-notifications>
     <igt-sidebar title="Voidlings Sphere">
 
-      <igt-sidebar-category name="Features"></igt-sidebar-category>
+      <igt-sidebar-currency v-bind:currency="CurrencyType.Voidlings"></igt-sidebar-currency>
+      <igt-sidebar-currency v-bind:currency="CurrencyType.CombatBots" label="Nanobots"></igt-sidebar-currency>
+      <igt-sidebar-currency v-bind:currency="CurrencyType.VoidBatteries" label="Void Batteries"></igt-sidebar-currency>
 
-      <igt-tab name="Example">
-        <igt-example-feature></igt-example-feature>
+      <igt-tab name="Combat" :selected="true">
+        <igt-combat-feature></igt-combat-feature>
       </igt-tab>
 
-      <igt-tab name="Inventory" :selected="true">
-        <igt-inventory></igt-inventory>
+      <igt-tab name="Factory" :visible="factoryRequirement.isCompleted">
+        <igt-factory-feature></igt-factory-feature>
       </igt-tab>
 
-      <igt-tab name="Wallet">
-        <igt-wallet></igt-wallet>
+      <igt-tab name="Wheel" :visible="wheelRequirement.isCompleted">
+        <igt-wheel-feature></igt-wheel-feature>
       </igt-tab>
 
-      <igt-tab name="Key Items">
+      <igt-tab name="Accomplishments">
         <igt-key-items></igt-key-items>
-      </igt-tab>
-
-      <igt-tab name="Special Events">
-        <igt-special-events></igt-special-events>
-      </igt-tab>
-
-      <igt-tab name="Achievements">
-        <igt-achievements :achievements-feature="game.features.achievements"></igt-achievements>
-      </igt-tab>
-
-      <igt-tab name="Redeemable Codes">
-        <igt-redeemable-codes></igt-redeemable-codes>
       </igt-tab>
 
       <igt-tab name="Settings">
@@ -60,33 +50,37 @@
 import {App} from "@/App.ts"
 import IgtSidebar from "@/components/util/sidebar/igt-sidebar-layout";
 import IgtTab from "@/components/util/igt-tab";
-import IgtAchievements from "@/components/features/achievements/igt-achievements";
-import IgtWallet from "@/components/features/wallet/igt-wallet";
 import IgtNotifications from "@/components/util/igt-notifications";
 import IgtDeveloperPanel from "@/components/developer-panel/igt-developer-panel";
 import IgtSidebarCategory from "@/components/util/sidebar/igt-sidebar-category";
 import IgtSidebarExternalLink from "@/components/util/sidebar/igt-sidebar-external-link";
 import IgtSettings from "@/components/features/settings/igt-settings";
-import IgtRedeemableCodes from "@/components/features/codes/igt-redeemable-codes";
-import IgtExampleFeature from "@/components/features/example/igt-example-feature";
-import IgtSpecialEvents from "@/components/features/special-events/igt-special-events";
-import IgtInventory from "@/components/features/inventory/igt-inventory";
 import IgtKeyItems from "@/components/features/key-items/igt-key-items";
+import IgtSidebarCurrency from "@/components/util/sidebar/igt-sidebar-currency";
+import {CurrencyType} from '@/ig-template/features/wallet/CurrencyType';
+import IgtCombatFeature from "@/components/features/combat/igt-combat-feature";
+import IgtFactoryFeature from "@/components/features/factory/igt-factory-feature";
+import IgtWheelFeature from "@/components/features/wheel/igt-wheel-feature";
+import {KeyItemRequirement} from "@/ig-template/features/key-items/KeyItemRequirement";
+import {KeyItemId} from "@/ig-template/features/key-items/KeyItemId";
 
 export default {
   components: {
+    IgtCombatFeature,
+    IgtFactoryFeature,
+    IgtWheelFeature,
+    IgtSidebarCurrency,
     IgtKeyItems,
-    IgtInventory,
-    IgtSpecialEvents,
-    IgtExampleFeature,
-    IgtRedeemableCodes,
     IgtSettings,
     IgtSidebarExternalLink,
-    IgtSidebarCategory, IgtDeveloperPanel, IgtNotifications, IgtWallet, IgtAchievements, IgtTab, IgtSidebar
+    IgtSidebarCategory, IgtDeveloperPanel, IgtNotifications, IgtTab, IgtSidebar
   },
   data() {
     return {
-      game: App.game
+      game: App.game,
+      CurrencyType,
+      factoryRequirement: new KeyItemRequirement(App.game.features.keyItems, KeyItemId.Factory),
+      wheelRequirement: new KeyItemRequirement(App.game.features.keyItems, KeyItemId.Wheel),
     }
   },
   computed: {

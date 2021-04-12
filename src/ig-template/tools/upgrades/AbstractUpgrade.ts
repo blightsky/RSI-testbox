@@ -7,39 +7,41 @@ import {UpgradeId} from "@/ig-template/tools/upgrades/UpgradeId";
 import {Currency} from "@/ig-template/features/wallet/Currency";
 import {UpgradeSaveData} from "@/ig-template/tools/upgrades/UpgradeSaveData";
 import {Wallet} from "@/ig-template/features/wallet/Wallet";
+import {DecimalValue} from "@/lib/DecimalValueType";
+import Decimal from "@/lib/break_eternity.min";
 
 export abstract class AbstractUpgrade implements Saveable {
     id: UpgradeId;
     type: UpgradeType;
     displayName: string;
-    maxLevel: number;
-    level: number;
+    maxLevel: Decimal;
+    level: Decimal;
 
-    protected constructor(id: UpgradeId, type: UpgradeType, displayName: string, maxLevel: number) {
+    protected constructor(id: UpgradeId, type: UpgradeType, displayName: string, maxLevel: DecimalValue) {
         this.id = id;
         this.type = type;
         this.displayName = displayName;
-        this.maxLevel = maxLevel;
-        this.level = 0;
+        this.maxLevel = new Decimal(maxLevel);
+        this.level = new Decimal(0);
     }
 
     abstract getCost(): Currency;
 
-    getBonus(): number {
+    getBonus(): Decimal {
         return this.getBonusForLevel(this.level);
     }
 
-    abstract getBonusForLevel(level: number): number;
+    abstract getBonusForLevel(level: Decimal): Decimal;
 
-    getUpgradeBonus(): number {
+    getUpgradeBonus(): Decimal {
         if (!this.isMaxLevel()) {
-            return this.getBonusForLevel(this.level + 1) - this.getBonusForLevel(this.level);
+            return this.getBonusForLevel(this.level.add(1)).sub(this.getBonusForLevel(this.level));
         }
-        return 0;
+        return new Decimal(0);
     }
 
     isMaxLevel(): boolean {
-        return this.level >= this.maxLevel;
+        return this.level.gte(this.maxLevel);
     }
 
     canAfford(wallet: Wallet): boolean {
@@ -48,7 +50,7 @@ export abstract class AbstractUpgrade implements Saveable {
 
     // Override in subclass when other requirements exist.
     canBuy(wallet: Wallet): boolean {
-        return this.level < this.maxLevel && this.canAfford(wallet);
+        return this.level.lt(this.maxLevel) && this.canAfford(wallet);
     }
 
     buy(wallet: Wallet): boolean {
@@ -62,7 +64,7 @@ export abstract class AbstractUpgrade implements Saveable {
     }
 
     levelUp(): void {
-        this.level = this.level + 1;
+        this.level = this.level.add(1);
     }
 
 
@@ -70,13 +72,13 @@ export abstract class AbstractUpgrade implements Saveable {
     saveKey: string = this.id;
 
     load(data: UpgradeSaveData): void {
-        this.level = data.level;
+        this.level = Decimal.fromString(data.level);
     }
 
     save(): UpgradeSaveData {
         return {
             'id': this.id,
-            'level': this.level,
+            'level': this.level.toString(),
         }
     }
 

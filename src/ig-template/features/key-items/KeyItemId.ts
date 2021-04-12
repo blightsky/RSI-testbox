@@ -1,4 +1,11 @@
 export enum KeyItemId {
-    Item1 = 'item-1',
-    Item2 = 'item-2',
+    Factory = 'Factory',
+    StrongerWeapons = 'StrongerWeapons',
+    CombatEfficiency = 'CombatEfficiency',
+    WheelOfFortune = 'WheelOfFortune',
+    WheelOfButter = 'WheelOfButter',
+    Synergy = 'Synergy',
+    Wheel = 'Wheel',
+    MassMurder = 'MassMurder',
+    Victory = 'Victory'
 }

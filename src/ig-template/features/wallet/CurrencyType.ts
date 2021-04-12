@@ -1,4 +1,5 @@
 export enum CurrencyType {
-    Money = "Money",
-    Secondary = "Secondary",
+    Voidlings = "Voidlings",
+    CombatBots = "CombatBots",
+    VoidBatteries = "VoidBatteries"
 }

@@ -1,12 +1,13 @@
 import Vue from 'vue'
-import Decimal from "@/lib/break_eternity.min";
 import {DecimalValue} from "@/lib/DecimalValueType";
+import {NumberFormatter} from "@/ig-template/util/NumberFormatter";
 
-Vue.filter('numberFormat', function (value: DecimalValue, places: number = 2) {
-    if (value == undefined) {
-        return "";
-    }
-    return new Decimal(value).toStringWithDecimalPlaces(places);
+Vue.filter('numberFormat', function (value: DecimalValue) {
+    return NumberFormatter.format(value);
+})
+
+Vue.filter('numberFormatWhole', function (value: DecimalValue) {
+    return NumberFormatter.formatWhole(value);
 })
 
 Vue.filter('dateFormat', function (date: Date) {

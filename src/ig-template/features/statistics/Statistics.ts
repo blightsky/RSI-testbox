@@ -28,9 +28,9 @@ export class Statistics extends Feature {
 
     initialize(features: Features): void {
         features.wallet.onCurrencyGain.subscribe((currency: Currency) => {
-            if (currency.type === CurrencyType.Money) {
+            /*if (currency.type === CurrencyType.Money) {
                 this.incrementNumberStatistic(StatisticId.TotalMoneyGained, currency.amount);
-            }
+            }*/
         });
     }
 

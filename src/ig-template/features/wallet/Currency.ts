@@ -21,7 +21,7 @@ export class Currency {
         if (isNaN(this.amount.sign) || isNaN(this.amount.layer) || isNaN(this.amount.mag)) {
             return false;
         }
-        return this.amount.gt(0);
+        return true;
     }
 
     public toString(): string {
